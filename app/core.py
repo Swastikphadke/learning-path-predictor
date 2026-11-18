@@ -1,4 +1,4 @@
-"""Synthetic student course histories for the Learning Path Predictor."""
+"""Synthetic student course histories and milestone entry points."""
 
 from __future__ import annotations
 
@@ -66,7 +66,6 @@ def generate_student_sequences(n_students: int = 1_000, seed: int = 42) -> list[
         if available and rng.random() < 0.15:
             completed.append(rng.choice(available))
 
-        # Minor local variation prevents the model from seeing one rigid order.
         for index in range(0, len(completed) - 1, 2):
             if rng.random() < 0.20:
                 completed[index], completed[index + 1] = completed[index + 1], completed[index]
@@ -80,21 +79,36 @@ def milestone_1(n_students: int = 1_000, seed: int = 42) -> list[list[str]]:
     return generate_student_sequences(n_students=n_students, seed=seed)
 
 
-# --- Milestone 2: Pretrain a small language model on these course ID sequences.
-def milestone_2():  # TODO(milestone 2)
-    raise NotImplementedError("TODO(milestone 2)")
+def milestone_2(
+    n_students: int = 1_000,
+    seed: int = 42,
+    epochs: int = 8,
+    batch_size: int = 32,
+    checkpoint_path: str = "artifacts/course_lm.pt",
+):
+    """Milestone 2: pretrain a compact Transformer on course-ID sequences."""
+    from app.language_model import train_course_language_model
+
+    sequences = milestone_1(n_students=n_students, seed=seed)
+    return train_course_language_model(
+        sequences,
+        epochs=epochs,
+        batch_size=batch_size,
+        seed=seed,
+        checkpoint_path=checkpoint_path,
+    )
 
 
-# --- Milestone 3: Implement a function to predict the next likely course given a partial sequence.
+# --- Milestone 3: next-course prediction after market-basket fine-tuning.
 def milestone_3():  # TODO(milestone 3)
     raise NotImplementedError("TODO(milestone 3)")
 
 
-# --- Milestone 4: Create a Streamlit interface for students to input their completed courses and view recommendations.
+# --- Milestone 4: Streamlit interface.
 def milestone_4():  # TODO(milestone 4)
     raise NotImplementedError("TODO(milestone 4)")
 
 
-# --- Milestone 5: Analyze which course itemsets the model has learned.
+# --- Milestone 5: Analyze learned course itemsets and representations.
 def milestone_5():  # TODO(milestone 5)
     raise NotImplementedError("TODO(milestone 5)")

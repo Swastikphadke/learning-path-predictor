@@ -1,8 +1,8 @@
-"""Tests for the project milestones. Activate each milestone test as you implement it."""
+"""Tests for the Learning Path Predictor milestones."""
 
 import pytest
 
-from app.core import COURSE_CATALOG, generate_student_sequences, milestone_1
+from app.core import COURSE_CATALOG, generate_student_sequences, milestone_1, milestone_2
 
 
 def test_milestone_1():
@@ -24,9 +24,20 @@ def test_milestone_1_rejects_invalid_student_count():
         milestone_1(n_students=0)
 
 
-@pytest.mark.skip(reason="remove this line when you start milestone 2")
-def test_milestone_2():
-    raise NotImplementedError("write the test for milestone 2")
+def test_milestone_2_trains_and_saves_checkpoint(tmp_path):
+    result = milestone_2(
+        n_students=40,
+        seed=7,
+        epochs=1,
+        batch_size=8,
+        checkpoint_path=str(tmp_path / "course_lm.pt"),
+    )
+    assert result.model is not None
+    assert 3 < result.tokenizer.vocab_size <= len(COURSE_CATALOG) + 3
+    assert len(result.train_loss) == 1
+    assert result.train_loss[0] > 0
+    assert result.validation_loss > 0
+    assert (tmp_path / "course_lm.pt").exists()
 
 
 @pytest.mark.skip(reason="remove this line when you start milestone 3")

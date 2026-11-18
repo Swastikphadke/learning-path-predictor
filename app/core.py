@@ -142,11 +142,34 @@ def milestone_3(
 
 
 
-# --- Milestone 4: Streamlit interface.
-def milestone_4():  # TODO(milestone 4)
-    raise NotImplementedError("TODO(milestone 4)")
 
+# --- Milestone 5: Model analysis.
 
-# --- Milestone 5: Analyze learned course itemsets and representations.
-def milestone_5():  # TODO(milestone 5)
-    raise NotImplementedError("TODO(milestone 5)")
+def milestone_5(
+    n_students: int = 1_000,
+    seed: int = 42,
+    completed_courses: list[str] | None = None,
+    checkpoint_path: str = "artifacts/course_lm.pt",
+):
+    """Analyze frequent course itemsets, embeddings, and attention patterns."""
+    from app.analysis import analyze_attention, analyze_course_patterns
+
+    sequences = milestone_1(n_students=n_students, seed=seed)
+
+    if completed_courses is None:
+        completed_courses = ["CS101", "MA101", "CS102", "CS103"]
+
+    pattern_analysis = analyze_course_patterns(
+        sequences,
+        checkpoint_path=checkpoint_path,
+    )
+
+    attention_analysis = analyze_attention(
+        completed_courses,
+        checkpoint_path=checkpoint_path,
+    )
+
+    return {
+        "course_patterns": pattern_analysis,
+        "attention": attention_analysis,
+    }

@@ -2,7 +2,13 @@
 
 import pytest
 
-from app.core import COURSE_CATALOG, generate_student_sequences, milestone_1, milestone_2
+from app.core import (
+    COURSE_CATALOG,
+    generate_student_sequences,
+    milestone_1,
+    milestone_2,
+    milestone_2_finetune,
+)
 
 
 def test_milestone_1():
@@ -38,6 +44,34 @@ def test_milestone_2_trains_and_saves_checkpoint(tmp_path):
     assert result.train_loss[0] > 0
     assert result.validation_loss > 0
     assert (tmp_path / "course_lm.pt").exists()
+
+
+def test_milestone_2_basket_finetuning(tmp_path):
+    initial_checkpoint = tmp_path / "initial.pt"
+    output_checkpoint = tmp_path / "basket_finetuned.pt"
+
+    milestone_2(
+        n_students=40,
+        seed=11,
+        epochs=1,
+        batch_size=8,
+        checkpoint_path=str(initial_checkpoint),
+    )
+    result = milestone_2_finetune(
+        n_students=40,
+        seed=11,
+        epochs=1,
+        batch_size=8,
+        checkpoint_path=str(initial_checkpoint),
+        output_path=str(output_checkpoint),
+        min_support=0.05,
+    )
+
+    assert result.model is not None
+    assert 3 < result.tokenizer.vocab_size <= len(COURSE_CATALOG) + 3
+    assert len(result.train_loss) == 1
+    assert result.frequent_itemsets
+    assert output_checkpoint.exists()
 
 
 @pytest.mark.skip(reason="remove this line when you start milestone 3")

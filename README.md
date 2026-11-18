@@ -4,24 +4,48 @@
 
 The Learning Path Predictor is an EdTech project designed for students. It leverages language model techniques to recommend optimal next courses or study materials based on a student's completed academic journey, helping them navigate their learning path efficiently.
 
-## Milestones
+- [x] Milestone 1: Generate synthetic student course completion sequences.
+- [x] Milestone 2: Pretrain a Transformer language model on course sequences.
+- [x] Milestone 2: Continue pretraining on randomized market-basket sequences.
+- [x] Milestone 2: Evaluate learned itemset recovery against exact frequent itemsets.
 
-Tick these off as you go, and commit after each one.
+### Milestone 2 — Results
 
-- [x] **1. Generate mock student course completion data as sequences of course IDs.**
-      Implemented reproducible synthetic student histories using Python's `random` module, with four learning paths and cross-disciplinary variation.
+**Pretraining**
+- Architecture: Compact causal Transformer.
+- Training data: 1,000 synthetic student histories.
+- Epochs: 8.
+- Final training loss: 0.8267.
+- Validation loss: 0.8073.
 
-- [ ] **2. Pretrain a small language model on these course ID sequences.**
-      Implemented a compact causal Transformer using PyTorch, with course-ID tokenization, next-token prediction, and checkpoint saving. Trained on 1,000 synthetic student histories for 8 epochs. Training loss: 0.827; validation loss: 0.807. Integration of the `lfretail-lfmarketbasket` fine-tuning technique remains to be completed.
+**Market-Basket Fine-Tuning**
+- Fine-tuned on randomized course baskets.
+- Epochs: 3.
+- Learning rate: 0.0005.
+- Initial validation loss: 5.7662.
+- Final validation loss: 3.4912.
+- Exact frequent itemsets mined: 931.
 
-- [ ] **3. Implement a function to predict the next likely course given a partial sequence.**
-      Adapt the language model's prediction capabilities, similar to predicting the next item in a sequence.
+**Itemset Recovery Evaluation**
+- Generated baskets: 810.
+- Reference itemsets: 931.
+- Generated itemsets: 1,073.
+- Recovered itemsets: 807.
+- Precision: 75.21%.
+- Recall: 86.68%.
+- F1 Score: 80.54%.
 
-- [ ] **4. Create a Streamlit interface for students to input their completed courses and view recommendations.**
-      Utilize Streamlit components like `st.multiselect` and `st.write` to build the user interface.
+Note: Itemset recovery is evaluated against the training-distribution reference
+and should not be interpreted as held-out generalization performance.
 
-- [ ] **5. Analyze which course "itemsets" the model has learned.**
-      Inspect the model's embeddings or attention weights to identify frequently co-occurring courses, similar to analyzing market basket associations.
+Checkpoint files:
+- `artifacts/course_lm.pt`
+- `artifacts/course_lm_basket.pt`
+
+
+- [ ] Milestone 3: Predict the next likely course given a partial sequence.
+- [ ] Milestone 4: Build the Streamlit interface.
+- [ ] Milestone 5: Analyze learned itemsets, embeddings, attention weights, and co-occurrences.
 
 ## Run it
 

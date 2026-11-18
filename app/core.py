@@ -99,6 +99,30 @@ def milestone_2(
     )
 
 
+def milestone_2_finetune(
+    n_students: int = 1_000,
+    seed: int = 42,
+    epochs: int = 3,
+    batch_size: int = 32,
+    checkpoint_path: str = "artifacts/course_lm.pt",
+    output_path: str = "artifacts/course_lm_basket.pt",
+    min_support: float = 0.05,
+):
+    """Milestone 2: continue pretraining on shuffled course baskets."""
+    from app.language_model import continue_pretraining_on_baskets
+
+    sequences = milestone_1(n_students=n_students, seed=seed)
+    return continue_pretraining_on_baskets(
+        sequences,
+        checkpoint_path=checkpoint_path,
+        output_path=output_path,
+        epochs=epochs,
+        batch_size=batch_size,
+        seed=seed,
+        min_support=min_support,
+    )
+
+
 # --- Milestone 3: next-course prediction after market-basket fine-tuning.
 def milestone_3():  # TODO(milestone 3)
     raise NotImplementedError("TODO(milestone 3)")

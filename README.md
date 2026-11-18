@@ -1,6 +1,6 @@
 # Learning Path Predictor
 
-[![Built with askThili](https://ask.thili.ai/api/v1/public/projects/gvkkgf5f58/badge.svg)](https://ask.thili.ai/b/gvkkgf5f58)
+[![Built with askThili](https://msrit.ask.thili.ai/api/v1/public/projects/gvkkgf5f58/badge.svg)](https://msrit.ask.thili.ai/b/gvkkgf5f58)
 
 The Learning Path Predictor is an EdTech project designed for students. It leverages language model techniques to recommend optimal next courses or study materials based on a student's completed academic journey, helping them navigate their learning path efficiently.
 

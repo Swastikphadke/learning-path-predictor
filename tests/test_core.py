@@ -74,9 +74,108 @@ def test_milestone_2_basket_finetuning(tmp_path):
     assert output_checkpoint.exists()
 
 
-@pytest.mark.skip(reason="remove this line when you start milestone 3")
-def test_milestone_3():
-    raise NotImplementedError("write the test for milestone 3")
+
+from app.language_model import CourseLanguageModel, CourseTokenizer
+from app.recommendations import predict_next_courses
+
+
+def test_milestone_3_returns_top_recommendations():
+    tokenizer = CourseTokenizer(
+        ["CS101", "CS102", "CS103", "CS104", "MA101"]
+    )
+
+    model = CourseLanguageModel(
+        vocab_size=tokenizer.vocab_size,
+        pad_id=tokenizer.pad_id,
+    )
+
+    recommendations = predict_next_courses(
+        model,
+        tokenizer,
+        ["CS101", "CS102"],
+        top_n=3,
+    )
+
+    assert len(recommendations) == 3
+    assert all("course_id" in item for item in recommendations)
+    assert all("course_name" in item for item in recommendations)
+    assert all("probability" in item for item in recommendations)
+
+
+def test_milestone_3_excludes_completed_courses():
+    tokenizer = CourseTokenizer(
+        ["CS101", "CS102", "CS103", "CS104", "MA101"]
+    )
+
+    model = CourseLanguageModel(
+        vocab_size=tokenizer.vocab_size,
+        pad_id=tokenizer.pad_id,
+    )
+
+    completed = ["CS101", "CS102"]
+
+    recommendations = predict_next_courses(
+        model,
+        tokenizer,
+        completed,
+        top_n=5,
+    )
+
+    recommended_ids = {
+        item["course_id"] for item in recommendations
+    }
+
+    assert not recommended_ids.intersection(completed)
+
+
+def test_milestone_3_rejects_unknown_courses():
+    tokenizer = CourseTokenizer(["CS101", "CS102"])
+
+    model = CourseLanguageModel(
+        vocab_size=tokenizer.vocab_size,
+        pad_id=tokenizer.pad_id,
+    )
+
+    with pytest.raises(ValueError, match="Unknown course IDs"):
+        predict_next_courses(
+            model,
+            tokenizer,
+            ["INVALID101"],
+        )
+
+
+def test_milestone_3_rejects_duplicate_courses():
+    tokenizer = CourseTokenizer(["CS101", "CS102"])
+
+    model = CourseLanguageModel(
+        vocab_size=tokenizer.vocab_size,
+        pad_id=tokenizer.pad_id,
+    )
+
+    with pytest.raises(ValueError, match="duplicates"):
+        predict_next_courses(
+            model,
+            tokenizer,
+            ["CS101", "CS101"],
+        )
+
+
+def test_milestone_3_rejects_invalid_top_n():
+    tokenizer = CourseTokenizer(["CS101", "CS102"])
+
+    model = CourseLanguageModel(
+        vocab_size=tokenizer.vocab_size,
+        pad_id=tokenizer.pad_id,
+    )
+
+    with pytest.raises(ValueError, match="top_n"):
+        predict_next_courses(
+            model,
+            tokenizer,
+            ["CS101"],
+            top_n=0,
+        )
+
 
 
 @pytest.mark.skip(reason="remove this line when you start milestone 4")

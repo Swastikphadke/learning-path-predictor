@@ -123,9 +123,23 @@ def milestone_2_finetune(
     )
 
 
-# --- Milestone 3: next-course prediction after market-basket fine-tuning.
-def milestone_3():  # TODO(milestone 3)
-    raise NotImplementedError("TODO(milestone 3)")
+
+# --- Milestone 3: Next-course prediction.
+
+def milestone_3(
+    completed_courses: list[str],
+    checkpoint_path: str = "artifacts/course_lm.pt",
+    top_n: int = 5,
+):
+    """Milestone 3: predict the next likely courses for a student."""
+    from app.recommendations import recommend_from_checkpoint
+
+    return recommend_from_checkpoint(
+        completed_courses,
+        checkpoint_path=checkpoint_path,
+        top_n=top_n,
+    )
+
 
 
 # --- Milestone 4: Streamlit interface.

@@ -43,7 +43,44 @@ Checkpoint files:
 - `artifacts/course_lm_basket.pt`
 
 
-- [ ] Milestone 3: Predict the next likely course given a partial sequence.
+- [x] Milestone 3: Predict the next likely course given a partial sequence.
+
+### Milestone 3 — Next-Course Prediction
+
+Implemented:
+- Autoregressive next-course prediction using a causal Transformer.
+- Top-N recommendations with probability scores.
+- Filtering of previously completed courses.
+- Support for original and basket-fine-tuned checkpoints.
+
+**Held-Out Evaluation**
+
+Dataset:
+- 1,000 synthetic student histories.
+- 800 training students.
+- 200 test students.
+- 1,821 next-course prediction examples.
+
+| Metric | Original Transformer | Basket-Fine-Tuned |
+|---|---:|---:|
+| Top-1 Accuracy | 76.83% | 74.74% |
+| Hit@5 | 96.87% | 96.43% |
+| MRR | 0.8561 | 0.8401 |
+
+The original Transformer performed better on all three
+next-course prediction metrics.
+
+The basket-fine-tuned model remains useful for learning
+course co-occurrence patterns, as demonstrated by the
+Milestone 2 itemset recovery experiment.
+
+The original Transformer is therefore selected as the
+default recommendation model.
+
+Note: Evaluation uses synthetic student histories and
+does not establish real-world recommendation performance.
+
+
 - [ ] Milestone 4: Build the Streamlit interface.
 - [ ] Milestone 5: Analyze learned itemsets, embeddings, attention weights, and co-occurrences.
 

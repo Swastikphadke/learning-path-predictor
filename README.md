@@ -81,8 +81,46 @@ Note: Evaluation uses synthetic student histories and
 does not establish real-world recommendation performance.
 
 
-- [ ] Milestone 4: Build the Streamlit interface.
-- [ ] Milestone 5: Analyze learned itemsets, embeddings, attention weights, and co-occurrences.
+- [x] Milestone 4: Build the Streamlit interface.
+- [x] Milestone 5: Analyze learned itemsets, embeddings, attention weights, and co-occurrences.
+
+### Milestone 4 — Streamlit Application
+
+Implemented PathFinder, a Streamlit-based learning path
+recommendation interface.
+
+Features:
+- Interactive completed-course selection.
+- Original and basket-fine-tuned model selection.
+- Top-5 next-course recommendations.
+- Recommendation probability scores.
+- Completed-course progress dashboard.
+
+Run locally:
+
+python -m streamlit run app/streamlit_app.py
+
+### Milestone 5 — Model Analysis
+
+Implemented:
+- Frequent itemset mining using thilimarketbasket.
+- Course embedding similarity using cosine similarity.
+- Per-head causal self-attention extraction.
+- Analysis of learned course co-occurrence patterns.
+
+Example findings:
+- CS101, CS102 and MA101 occur together with 100% support.
+- CS101, CS102 and DS201 occur together with 62.3% support.
+- Highest observed embedding similarity:
+  CS105 and ST101: 0.3549.
+- Attention analysis showed Head 2 assigning
+  approximately 99.997% attention to CS102
+  when processing CS103 in the inspected sequence.
+
+Note: These findings are exploratory and based on
+synthetic student histories. Embedding similarity
+and attention weights should not be interpreted
+as definitive explanations of academic relationships.
 
 ## Run it
 
